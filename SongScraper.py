@@ -9,6 +9,7 @@ class SongScraper:
     def get_songs(self):
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:131.0) Gecko/20100101 Firefox/131.0"}
         url = f"{URL}{self.date}"
+        year = self.date[:4]
         songs_website = requests.get(url=url, headers=headers)
         songs_website.raise_for_status()
 
@@ -22,7 +23,7 @@ class SongScraper:
             artist_span = parent.select_one("span.c-label")
 
             artist = artist_span.getText().strip() if artist_span else "Unknown Artist"
-            self.songs.append(f"{song_title} - {artist}")
+            self.songs.append({"track": song_title,  "artist": artist , "year": year})
 
         return self.songs
 
